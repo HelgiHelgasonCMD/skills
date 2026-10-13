@@ -1,0 +1,166 @@
+{
+  "name": "claude-inline",
+  "displayName": "Claude Inline",
+  "description": "Copilot-style inline chat powered by Claude Code: Ctrl+I, type what you want, Keep or Undo each change.",
+  "version": "0.1.0",
+  "publisher": "helgihelgason",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HelgiHelgasonCMD/skills"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "main": "./src/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "claudeInline.start",
+        "title": "Claude: Inline Chat"
+      },
+      {
+        "command": "claudeInline.submit",
+        "title": "Send",
+        "icon": "$(send)"
+      },
+      {
+        "command": "claudeInline.keepAll",
+        "title": "Claude: Keep All Changes",
+        "icon": "$(check)"
+      },
+      {
+        "command": "claudeInline.undoAll",
+        "title": "Claude: Undo All Changes",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "claudeInline.showDiff",
+        "title": "Claude: Show Diff",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "claudeInline.close",
+        "title": "Close",
+        "icon": "$(close)"
+      },
+      {
+        "command": "claudeInline.keepHunk",
+        "title": "Keep"
+      },
+      {
+        "command": "claudeInline.undoHunk",
+        "title": "Undo"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "claudeInline.start",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "editorTextFocus && !editorReadonly"
+      },
+      {
+        "command": "claudeInline.keepAll",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus && claudeInline.pending"
+      },
+      {
+        "command": "claudeInline.undoAll",
+        "key": "ctrl+backspace",
+        "mac": "cmd+backspace",
+        "when": "editorTextFocus && claudeInline.pending"
+      }
+    ],
+    "menus": {
+      "comments/commentThread/context": [
+        {
+          "command": "claudeInline.submit",
+          "group": "inline",
+          "when": "commentController == claudeInline"
+        }
+      ],
+      "comments/commentThread/title": [
+        {
+          "command": "claudeInline.keepAll",
+          "group": "navigation@1",
+          "when": "commentController == claudeInline && commentThread == claudeInline.pending"
+        },
+        {
+          "command": "claudeInline.undoAll",
+          "group": "navigation@2",
+          "when": "commentController == claudeInline && commentThread == claudeInline.pending"
+        },
+        {
+          "command": "claudeInline.showDiff",
+          "group": "navigation@3",
+          "when": "commentController == claudeInline && commentThread == claudeInline.pending"
+        },
+        {
+          "command": "claudeInline.close",
+          "group": "navigation@4",
+          "when": "commentController == claudeInline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claudeInline.submit",
+          "when": "false"
+        },
+        {
+          "command": "claudeInline.close",
+          "when": "false"
+        },
+        {
+          "command": "claudeInline.keepHunk",
+          "when": "false"
+        },
+        {
+          "command": "claudeInline.undoHunk",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Inline",
+      "properties": {
+        "claudeInline.claudePath": {
+          "type": "string",
+          "default": "claude",
+          "description": "Path to the Claude Code CLI. It uses the CLI's own login, so a Pro, Team or Enterprise plan works without an API key."
+        },
+        "claudeInline.model": {
+          "type": "string",
+          "default": "sonnet",
+          "description": "Model alias or id passed to `claude --model`."
+        },
+        "claudeInline.maxWholeFileLines": {
+          "type": "number",
+          "default": 800,
+          "description": "With no selection, files up to this many lines are editable as a whole; larger files use a window round the cursor."
+        }
+      }
+    },
+    "configurationDefaults": {
+      "comments.openView": "never"
+    }
+  },
+  "scripts": {
+    "test:unit": "node --test test/unit/*.test.js",
+    "test:integration": "node test/integration/run.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.0.0"
+  }
+}
