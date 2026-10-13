@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Review each change</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#101216}
+a{color:#8AB4FF}a:hover{color:#B8D0FF}
+</style>
+</helmet>
+<div style="width: 880px; height: 640px; box-sizing: border-box; padding: 40px 48px; display: flex; flex-direction: column; gap: 24px; background: #101216; color: #E6E8EB; font-family: 'IBM Plex Sans', sans-serif">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #F5B454">Step 2</div>
+<h1 style="margin: 0; font-size: 32px; font-weight: 600">Accept or reject each change</h1>
+<p style="margin: 0; font-size: 16px; color: #A7AFBB">One small edit per comment, with the comment removed in the same edit.</p>
+</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; background: #181B21; border: 1px solid #2A2F38; border-radius: 10px; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid #2A2F38; font-size: 13px; color: #A7AFBB">
+<span style="font-family: 'IBM Plex Mono', monospace; color: #E6E8EB">demo.py</span>
+<span>proposed changes</span>
+</div>
+<div style="display: flex; flex-direction: column; padding: 10px 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 21px; white-space: pre">
+<div style="padding: 0 16px"><span style="color: #7A8391">  </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">fetch_user</span>(user_id):</div>
+<div style="padding: 0 16px; background: #3A1D22; color: #FFC9C9"><span style="color: #FF8A8A">- </span>    # @claude add a 5 second timeout and raise a clear error on HTTP failure</div>
+<div style="padding: 0 16px; background: #3A1D22; color: #FFC9C9"><span style="color: #FF8A8A">- </span>    with urllib.request.urlopen(f"https://api.example.com/users/{user_id}") as r:</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>    url = f"https://api.example.com/users/{user_id}"</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>    try:</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>        with urllib.request.urlopen(url, timeout=5) as r:</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>            return json.load(r)</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>    except urllib.error.HTTPError as e:</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>        raise RuntimeError(f"fetching user {user_id} failed: HTTP {e.code}") from e</div>
+</div>
+<div style="display: flex; gap: 8px; padding: 0 16px 14px">
+<button type="button" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; min-height: 32px; padding: 0 14px; border: 0; border-radius: 6px; background: #2F6FEB; color: #FFFFFF">Accept this change</button>
+<button type="button" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; min-height: 32px; padding: 0 14px; border: 1px solid #4B5563; border-radius: 6px; background: transparent; color: #E6E8EB">Reject this change</button>
+</div>
+<div style="border-top: 1px dashed #2A2F38"></div>
+<div style="display: flex; flex-direction: column; padding: 10px 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 21px; white-space: pre">
+<div style="padding: 0 16px"><span style="color: #7A8391">  </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">full_name</span>(user):</div>
+<div style="padding: 0 16px; background: #3A1D22; color: #FFC9C9"><span style="color: #FF8A8A">- </span>    return user["first"] + " " + user["last"]  # @claude handle a missing "last" key</div>
+<div style="padding: 0 16px; background: #16351F; color: #C6F3D1"><span style="color: #7EE2A0">+ </span>    return " ".join(p for p in (user["first"], user.get("last")) if p)</div>
+</div>
+<div style="display: flex; gap: 8px; padding: 0 16px 14px">
+<button type="button" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; min-height: 32px; padding: 0 14px; border: 0; border-radius: 6px; background: #2F6FEB; color: #FFFFFF">Accept this change</button>
+<button type="button" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; min-height: 32px; padding: 0 14px; border: 1px solid #4B5563; border-radius: 6px; background: transparent; color: #E6E8EB">Reject this change</button>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":880,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

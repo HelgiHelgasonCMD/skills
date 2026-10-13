@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leave a comment</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#101216}
+a{color:#8AB4FF}a:hover{color:#B8D0FF}
+</style>
+</helmet>
+<div style="width: 880px; height: 640px; box-sizing: border-box; padding: 40px 48px; display: flex; flex-direction: column; gap: 24px; background: #101216; color: #E6E8EB; font-family: 'IBM Plex Sans', sans-serif">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #F5B454">Step 1</div>
+<h1 style="margin: 0; font-size: 32px; font-weight: 600">Leave a comment where you want the change</h1>
+<p style="margin: 0; font-size: 16px; color: #A7AFBB">Write <span style="font-family: 'IBM Plex Mono', monospace; color: #F5B454">@claude</span> to ask for an edit, or <span style="font-family: 'IBM Plex Mono', monospace; color: #F5B454">@claude?</span> to ask a question.</p>
+</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; background: #181B21; border: 1px solid #2A2F38; border-radius: 10px; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid #2A2F38; font-size: 13px; color: #A7AFBB">
+<span style="font-family: 'IBM Plex Mono', monospace; color: #E6E8EB">demo.py</span>
+</div>
+<div style="display: flex; flex-direction: column; padding: 12px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 24px; white-space: pre">
+<div style="padding: 0 16px"><span style="color: #7A8391">7  </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">fetch_user</span>(user_id):</div>
+<div style="padding: 0 16px; background: rgba(245,180,84,0.14)"><span style="color: #7A8391">8  </span>    <span style="color: #F5B454"># @claude add a 5 second timeout and raise a clear error on HTTP failure</span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">9  </span>    <span style="color: #C792EA">with</span> urllib.request.urlopen(<span style="color: #C3E88D">f"https://api.example.com/users/{user_id}"</span>) <span style="color: #C792EA">as</span> r:</div>
+<div style="padding: 0 16px"><span style="color: #7A8391">10 </span>        <span style="color: #C792EA">return</span> json.load(r)</div>
+<div style="padding: 0 16px"><span style="color: #7A8391">11 </span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">12 </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">full_name</span>(user):</div>
+<div style="padding: 0 16px; background: rgba(245,180,84,0.14)"><span style="color: #7A8391">13 </span>    <span style="color: #C792EA">return</span> user[<span style="color: #C3E88D">"first"</span>] + <span style="color: #C3E88D">" "</span> + user[<span style="color: #C3E88D">"last"</span>]  <span style="color: #F5B454"># @claude handle a missing "last" key</span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">14 </span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">15 </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">greeting</span>(user):</div>
+<div style="padding: 0 16px; background: rgba(138,180,255,0.14)"><span style="color: #7A8391">16 </span>    <span style="color: #8AB4FF"># @claude? why would this break for users with no name at all</span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">17 </span>    <span style="color: #C792EA">return</span> <span style="color: #C3E88D">"Hello, "</span> + full_name(user)</div>
+<div style="padding: 0 16px"><span style="color: #7A8391">18 </span></div>
+<div style="padding: 0 16px"><span style="color: #7A8391">19 </span><span style="color: #C792EA">def</span> <span style="color: #82AAFF">total</span>(xs):</div>
+<div style="padding: 0 16px; background: rgba(245,180,84,0.14)"><span style="color: #7A8391">20 </span>    <span style="color: #C792EA">return</span> sum(xs)  <span style="color: #F5B454"># @claude</span></div>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-top: 1px solid #2A2F38; background: #14171C">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #F5B454">&gt;</span>
+<span style="font-size: 15px">do my comments in demo.py</span>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":880,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
