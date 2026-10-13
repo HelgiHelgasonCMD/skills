@@ -204,7 +204,12 @@ function activate(context) {
     edit.replace(doc.uri, new vscode.Range(region.start, 0, regionEnd.lineNumber, regionEnd.text.length), result.replacement);
     if (result.replacement !== regionText) {
       if (!s.baseline) s.baseline = before;
-      await vscode.workspace.applyEdit(edit);
+      s.applying = true;
+      try {
+        await vscode.workspace.applyEdit(edit);
+      } finally {
+        s.applying = false;
+      }
     }
     s.region = { start: region.start, end: region.start + result.replacement.split('\n').length - 1 };
     s.history.push(text);
@@ -299,7 +304,10 @@ function activate(context) {
     }),
     vscode.workspace.onDidChangeTextDocument((e) => {
       const s = sessionFor(e.document.uri);
-      if (s) { settleIfDone(s); refresh(); }
+      if (s && core.shouldSettle(e.contentChanges.length, s.applying)) {
+        settleIfDone(s);
+        refresh();
+      }
     }),
     vscode.window.onDidChangeActiveTextEditor(refresh),
     vscode.window.onDidChangeVisibleTextEditors(refresh),

@@ -89,3 +89,9 @@ test('parseResult falls back to result text, and rejects errors and junk', () =>
   assert.throws(() => core.parseResult('nope'), /not JSON/);
   assert.throws(() => core.parseResult(JSON.stringify({ result: 'hi' })), /no replacement/);
 });
+
+test('shouldSettle ignores content-free change events and edits in flight', () => {
+  assert.equal(core.shouldSettle(1, false), true);
+  assert.equal(core.shouldSettle(0, false), false);
+  assert.equal(core.shouldSettle(1, true), false);
+});

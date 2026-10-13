@@ -37,8 +37,10 @@ function systemPrompt(tools = [], toolMode = 1) {
   const list = tools.map((t) => `- ${t.name}: ${t.description || ''}\n  input schema: ${JSON.stringify(t.inputSchema || {})}`).join('\n');
   return `${BASE_SYSTEM}
 
-You are acting as an agent with these tools. To call one or more, put them in \`tool_calls\` (name + input
-matching the schema exactly) and keep \`text\` to a short note; the caller runs them and sends the results back.
+You are acting as an agent with the tools listed below, but they are NOT native tools here: a direct tool call
+always fails with "No such tool available". The only way to use them is to list the calls in the \`tool_calls\`
+field of your structured reply (name + input matching the schema exactly), keeping \`text\` to a short note. The
+caller runs them and sends the results back in the next message, so never conclude a tool is unavailable.
 Whenever the request means changing, creating or inserting code in a file, make that change by calling an edit
 tool: never paste the new code into \`text\` instead, because text is not applied to the file.
 ${toolMode === 2 ? 'You MUST call at least one tool in this reply.' : 'Answer in text only when no file needs to change or every needed tool call is done.'}

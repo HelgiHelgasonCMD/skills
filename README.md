@@ -20,9 +20,11 @@ model picker, so **Copilot's own inline chat (Ctrl+I) runs on Claude**. Set it u
 `copilot-claude` skill ("set up Copilot inline chat with Claude"), or by hand from
 [Releases](https://github.com/HelgiHelgasonCMD/skills/releases).
 
-<p align="center">
-  <img src="docs/claude-inline/0-copilot-ctrl-i.png" width="640" alt="Copilot's Ctrl+I inline chat with Claude Sonnet as the model">
-</p>
+| Copilot Ctrl+I on Claude | Copilot Chat agent on Claude |
+|---|---|
+| <img src="docs/claude-inline/gifs/copilot-ctrl-i.gif" alt="Copilot inline chat answered by Claude"> | <img src="docs/claude-inline/gifs/copilot-chat-agent.gif" alt="Copilot Chat agent mode on Claude"> |
+| **Claude inline box (no Copilot)** | |
+| <img src="docs/claude-inline/gifs/claude-inline-box.gif" alt="Claude inline box with Keep and Undo per change"> | |
 
 ## Install the skills
 

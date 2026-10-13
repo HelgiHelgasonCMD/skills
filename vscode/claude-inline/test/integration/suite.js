@@ -107,6 +107,9 @@ if (process.env.CLAUDE_INLINE_KEYS) {
     keys('ctrl+Return');
     for (let i = 0; i < 50 && api.hunks(doc.uri).length === 0; i++) await wait(100);
     assert.equal(doc.getText(), 'a\nb\nc\nD\ne\n', 'typed text went to Claude, not into the file');
+    await wait(1000);
+    assert.ok(api.sessionFor(doc.uri), 'the change is still awaiting Keep/Undo after sending');
+    assert.equal(api.hunks(doc.uri).length, 1);
     shot('pending');
     await vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
     await wait(300);
