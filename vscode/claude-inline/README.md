@@ -5,7 +5,7 @@ and have **Claude** answer, through your Claude Code login. A Claude Pro, Team o
 works; no API key.
 
 <p>
-  <img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/0-copilot-ctrl-i.png" width="640" alt="Copilot's Ctrl+I inline chat with Claude Sonnet selected as the model">
+  <img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/0-copilot-ctrl-i.png" width="640" alt="Copilot Ctrl+I inline chat answered by Claude Sonnet through Claude Code: inline diff with Keep and Undo">
 </p>
 
 The extension registers Claude Code as a VS Code language-model provider, so **Claude Sonnet**, **Opus**
