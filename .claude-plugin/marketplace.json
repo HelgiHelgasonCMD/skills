@@ -1,0 +1,14 @@
+{
+  "name": "helgi-skills",
+  "description": "Claude Code skills by Helgi Helgason.",
+  "owner": {
+    "name": "Helgi Helgason"
+  },
+  "plugins": [
+    {
+      "name": "helgi-skills",
+      "source": ".",
+      "description": "Claude Code skills by Helgi Helgason, including inline-comments."
+    }
+  ]
+}
