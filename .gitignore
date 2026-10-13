@@ -1,0 +1,5 @@
+# Environment-specific overlays and the leak denylist never leave this machine.
+*.local.md
+.sensitive-terms.local
+__pycache__/
+*-workspace/
