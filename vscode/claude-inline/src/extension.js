@@ -2,6 +2,7 @@
 const vscode = require('vscode');
 const core = require('./core');
 const { runClaude } = require('./claude');
+const { registerProvider } = require('./provider');
 
 const BASE_SCHEME = 'claude-inline-base';
 const ME = { name: 'You' };
@@ -35,6 +36,7 @@ function cmdLink(label, command, uri) {
 }
 
 function activate(context) {
+  registerProvider(context);
   const sessions = new Map();
   const lensesChanged = new vscode.EventEmitter();
   const baseChanged = new vscode.EventEmitter(); // fires Uris: the diff view's left side

@@ -1,8 +1,8 @@
 {
   "name": "claude-inline",
-  "displayName": "Claude Inline",
-  "description": "Copilot-style inline chat powered by Claude Code: Ctrl+I, type what you want, Keep or Undo each change.",
-  "version": "0.1.0",
+  "displayName": "Claude for Copilot Inline Chat",
+  "description": "Use Claude, through your Claude Code login (Pro/Team/Enterprise plan, no API key), as the model in VS Code's Copilot inline chat (Ctrl+I) and chat.",
+  "version": "0.2.0",
   "publisher": "helgihelgason",
   "license": "MIT",
   "repository": {
@@ -10,7 +10,7 @@
     "url": "https://github.com/HelgiHelgasonCMD/skills"
   },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.104.0"
   },
   "categories": [
     "AI",
@@ -61,12 +61,6 @@
       }
     ],
     "keybindings": [
-      {
-        "command": "claudeInline.start",
-        "key": "ctrl+i",
-        "mac": "cmd+i",
-        "when": "editorTextFocus && !editorReadonly"
-      },
       {
         "command": "claudeInline.keepAll",
         "key": "ctrl+enter",
@@ -151,7 +145,13 @@
     },
     "configurationDefaults": {
       "comments.openView": "never"
-    }
+    },
+    "languageModelChatProviders": [
+      {
+        "vendor": "claude-code",
+        "displayName": "Claude Code"
+      }
+    ]
   },
   "scripts": {
     "test:unit": "node --test test/unit/*.test.js",

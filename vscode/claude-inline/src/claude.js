@@ -20,15 +20,16 @@ function resolveClaude(configured) {
 /**
  * One headless Claude Code call: no tools, no settings, no saved session — it can only
  * answer, never touch files. Uses the CLI's own login (Pro/Team/Enterprise plan or key).
+ * Resolves with the raw `--output-format json` stdout.
  */
-function runClaude({ claudePath, model, cwd, prompt, signal, timeoutMs = 180000 }) {
+function runClaudeRaw({ claudePath, model, cwd, prompt, system, schema, signal, timeoutMs = 180000 }) {
   const args = [
     '-p', '--output-format', 'json',
     '--tools', '',
     '--setting-sources', '',
     '--no-session-persistence',
-    '--json-schema', JSON.stringify(RESULT_SCHEMA),
-    '--system-prompt', SYSTEM_PROMPT,
+    '--json-schema', JSON.stringify(schema),
+    '--system-prompt', system,
   ];
   if (model) args.push('--model', model);
 
@@ -50,14 +51,33 @@ function runClaude({ claudePath, model, cwd, prompt, signal, timeoutMs = 180000 
       clearTimeout(timer);
       signal?.removeEventListener('abort', onAbort);
       if (signal?.aborted) return reject(new Error('Cancelled'));
-      try {
-        resolve(parseResult(out));
-      } catch (e) {
-        reject(new Error(code ? `${e.message}: ${(err || out).trim().slice(0, 300)}` : e.message));
-      }
+      resolve({ out, err, code });
     });
     child.stdin.end(prompt);
   });
 }
 
-module.exports = { runClaude, resolveClaude };
+function withExitDetail(e, { out, err, code }) {
+  return new Error(code ? `${e.message}: ${(err || out).trim().slice(0, 300)}` : e.message);
+}
+
+/** Inline-chat edit: returns { summary, replacement }. */
+async function runClaude(opts) {
+  const res = await runClaudeRaw({ ...opts, system: SYSTEM_PROMPT, schema: RESULT_SCHEMA });
+  try { return parseResult(res.out); } catch (e) { throw withExitDetail(e, res); }
+}
+
+/** Generic structured call for the language-model provider: returns the structured object. */
+async function runClaudeStructured(opts) {
+  const res = await runClaudeRaw(opts);
+  let d;
+  try {
+    d = JSON.parse(res.out);
+    if (d.is_error) throw new Error(d.result || 'Claude reported an error');
+  } catch (e) {
+    throw withExitDetail(e.message.includes('JSON') ? new Error('Claude returned output that is not JSON') : e, res);
+  }
+  return d.structured_output || JSON.parse(d.result);
+}
+
+module.exports = { runClaude, runClaudeStructured, resolveClaude };
