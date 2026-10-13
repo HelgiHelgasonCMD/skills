@@ -2,6 +2,10 @@
 
 Personal [Claude Code skills](https://code.claude.com/docs/en/skills), one per directory under `skills/`.
 
+<p align="center">
+  <img src="docs/inline-comments/2-review.png" width="720" alt="inline-comments: each @claude comment becomes a change you accept or reject">
+</p>
+
 ## Skills
 
 | Skill | What it does |

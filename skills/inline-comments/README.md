@@ -6,6 +6,16 @@ This is the "comment to change" half of the Copilot experience, built for Claude
 Write `@claude <what you want>` where you want it. Tell Claude "do my comments". Each
 instruction becomes its own small edit, which you accept or reject in the IDE.
 
+<p align="center">
+  <img src="../../docs/inline-comments/1-comment.png" width="32%" alt="Step 1: @claude comments left in a Python file">
+  <img src="../../docs/inline-comments/2-review.png" width="32%" alt="Step 2: each change shown as a diff with Accept and Reject buttons">
+  <img src="../../docs/inline-comments/3-summary.png" width="32%" alt="Step 3: summary listing what was done, answered and skipped">
+</p>
+
+| 1. Leave a comment | 2. Accept or reject each change | 3. Get a summary |
+|---|---|---|
+| `@claude` asks for an edit, `@claude?` asks a question. | One small edit per comment, comment removed in the same edit. | Questions answered in chat; unclear comments skipped, never guessed. |
+
 ## Example
 
 Before: [`examples/inline-comments/demo.py`](../../examples/inline-comments/demo.py)
