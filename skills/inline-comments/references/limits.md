@@ -13,12 +13,16 @@ decoration, must **start** with `@claude` followed by whitespace or end of line.
 | `# @claude rename this` | edit |
 | `x = 1  # @claude rename this` | edit; only the comment is removed |
 | `/* @claude split this\n   into two */` | edit; the instruction can span lines |
+| `/** @claude add example` opening a doc comment with other lines | edit; only the opener line is the marker, the docs stay |
 | ` * @claude handle overflow` inside a `/** */` | edit; only that line is removed |
 | `# @claude? why 2` | question; the file is never edited |
 | `# notes for @claude` | not a marker (the comment doesn't start with it) |
 | `"# @claude"` in a string | not a marker |
 
-Python and shell have no block comments, so their instructions are one line long.
+An instruction spans several lines only when the block comment holds nothing but the
+marker. A blank line, a `*`-prefixed line or an `@tag` line means the block also holds
+docs, so only the marker's own line counts. Python and shell have no block comments,
+so their instructions are one line long.
 
 ## Languages
 

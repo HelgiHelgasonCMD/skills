@@ -200,9 +200,22 @@ def find_markers_in_text(text, lang, path="<text>"):
         last_start, last_end = _line_bounds(text, c.end - 1)
         standalone_end = not text[c.end:last_end].strip()
 
-        # Whole comment is the marker: /* @claude ... */ (may span lines).
         if _strip_doc(inner).startswith("@claude"):
-            body = " ".join(_strip_doc(l) for l in _strip_doc(inner).splitlines())
+            lines = _strip_doc(inner).splitlines()
+            rest = lines[1:-1] + [l for l in lines[-1:] if l.strip()] if len(lines) > 1 else []
+            # Continuation lines only belong to the instruction when the comment is nothing
+            # but the marker. A `*`-prefixed, blank or `@tag` line means the block also holds
+            # docs (JSDoc, licence header): then only the opener line is the marker.
+            if any(not l.strip() or l.lstrip().startswith(("*", "@")) for l in rest):
+                mpos = c.start + text[c.start:].index("@claude")
+                _, ln_end = _line_bounds(text, mpos)
+                cut = len(text[:mpos].rstrip(" \t"))
+                removal = {"type": "span", "line": _lineno(text, mpos), "text": text[cut:ln_end].rstrip()}
+                m = _marker(path, text, mpos, lines[0].strip(), removal)
+                if m:
+                    markers.append(m)
+                continue
+            body = " ".join(l.strip() for l in lines)
             if standalone_start and standalone_end:
                 removal = {"type": "lines", "start": _lineno(text, c.start), "end": _lineno(text, c.end - 1)}
             else:

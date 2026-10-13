@@ -76,6 +76,25 @@ class MarkerTest(unittest.TestCase):
         self.assertEqual(fm.apply_removal(text, m),
                          "/**\n * Adds numbers.\n */\nfunction add(a, b) { return a + b; }\n")
 
+    def test_marker_on_doc_comment_opener_keeps_docs(self):
+        text = src("""
+            /** @C add example
+             * Computes the sum.
+             * @param a first
+             */
+            function add(a){}
+            """)
+        [m] = markers(text, "js")
+        self.assertEqual(m.instruction, "add example")
+        self.assertEqual(fm.apply_removal(text, m),
+                         "/**\n * Computes the sum.\n * @param a first\n */\nfunction add(a){}\n")
+
+    def test_marker_on_licence_header_opener_keeps_header(self):
+        text = "/* @C bump year\n\n   Copyright 2020 Someone */\nint x;\n".replace("@C", M)
+        [m] = markers(text, "c")
+        self.assertEqual(m.instruction, "bump year")
+        self.assertEqual(fm.apply_removal(text, m), "/*\n\n   Copyright 2020 Someone */\nint x;\n")
+
     def test_html_comment(self):
         text = "<p>hi</p>\n<!-- @C add aria label -->\n".replace("@C", M)
         [m] = markers(text, "html")
