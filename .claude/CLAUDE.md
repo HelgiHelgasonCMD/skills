@@ -1,6 +1,6 @@
 # Skills repo
 
-This repo is public. Every skill here is authored for anyone to read.
+This repo is public, and it is also a Claude Code plugin marketplace (`.claude-plugin/`); every skill under `skills/` ships in the `helgi-skills` plugin. Every skill here is authored for anyone to read.
 
 ## Creating or changing a skill
 - Use the `anthropic-skills:skill-creator` skill, with the skill directory at `skills/<name>/`.

@@ -1,6 +1,24 @@
 # skills
 
-Personal [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills), one per directory under `skills/`.
+Personal [Claude Code skills](https://code.claude.com/docs/en/skills), one per directory under `skills/`.
+
+## Skills
+
+| Skill | What it does |
+|---|---|
+| [inline-comments](skills/inline-comments/) | Copilot-style "comment to change": write `@claude <instruction>` in your code, and each one becomes a separate edit you review in the IDE. |
+
+## Install
+
+As a Claude Code plugin (2.1.275+):
+
+```
+/plugin install helgi-skills --marketplace HelgiHelgasonCMD/skills
+```
+
+Older versions: `/plugin marketplace add HelgiHelgasonCMD/skills`, then `/plugin install helgi-skills@helgi-skills`.
+
+## Developing
 
 ```bash
 make install   # symlink skills/* into ~/.claude/skills (never overwrites anything it didn't create)
