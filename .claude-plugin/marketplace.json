@@ -8,7 +8,7 @@
     {
       "name": "helgi-skills",
       "source": ".",
-      "description": "Claude Code skills by Helgi Helgason, including inline-comments."
+      "description": "copilot-claude (run Copilot's inline chat and agent mode on Claude) and inline-comments (@claude review comments)."
     }
   ]
 }
