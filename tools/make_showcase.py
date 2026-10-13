@@ -15,7 +15,8 @@ from pathlib import Path
 from PIL import Image
 
 W, H = 880, 640
-HOLD_MS, FADE_STEPS, FADE_MS = 3200, 8, 45
+# GIF delays are stored in 10 ms units, so keep these multiples of 10.
+HOLD_MS, FADE_STEPS, FADE_MS = 3200, 8, 50
 BG = (16, 18, 22)
 
 
@@ -39,13 +40,15 @@ def render(design_dir, names, out_dir):
 def gif(png_dir, names, out):
     frames = [Image.open(f"{png_dir}/{n}.png").convert("RGB").resize((W, H), Image.LANCZOS) for n in names]
     # One palette for every frame keeps colours stable instead of flickering between frames.
-    sheet = Image.new("RGB", (W, H * len(frames)))
-    for i, f in enumerate(frames):
+    # The background and half-faded frames are in it too, so fades don't snap to frame colours.
+    bg = Image.new("RGB", (W, H), BG)
+    tiles = frames + [bg] + [Image.blend(f, bg, 0.5) for f in frames]
+    sheet = Image.new("RGB", (W, H * len(tiles)))
+    for i, f in enumerate(tiles):
         sheet.paste(f, (0, i * H))
     palette = sheet.quantize(colors=255, method=Image.Quantize.MEDIANCUT)
 
     seq, durations = [], []
-    bg = Image.new("RGB", (W, H), BG)
     half = FADE_STEPS // 2
     for i, f in enumerate(frames):
         nxt = frames[(i + 1) % len(frames)]
