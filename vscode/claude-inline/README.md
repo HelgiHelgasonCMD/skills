@@ -22,7 +22,12 @@ From Claude Code, with the [helgi-skills plugin](https://github.com/HelgiHelgaso
 
 > set up Copilot inline chat with Claude
 
-The `copilot-claude` skill installs this extension and sets the default model. By hand:
+The `copilot-claude` skill installs this extension and sets the default model. It downloads the latest release,
+installs it, sets the model, and Ctrl+I opens on Claude Sonnet:
+
+<img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/gifs/setup.gif" width="640" alt="The setup script installs the extension and sets the default model, then Ctrl+I opens on Claude Sonnet">
+
+By hand:
 
 1. Install the Claude Code CLI and log in once: run `claude`, then `/login`.
 2. Download `claude-inline-<version>.vsix` from the

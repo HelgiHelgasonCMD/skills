@@ -23,8 +23,8 @@ model picker, so **Copilot's own inline chat (Ctrl+I) runs on Claude**. Set it u
 | Copilot Ctrl+I on Claude | Copilot Chat agent on Claude |
 |---|---|
 | <img src="docs/claude-inline/gifs/copilot-ctrl-i.gif" alt="Copilot inline chat answered by Claude"> | <img src="docs/claude-inline/gifs/copilot-chat-agent.gif" alt="Copilot Chat agent mode on Claude"> |
-| **Claude inline box (no Copilot)** | |
-| <img src="docs/claude-inline/gifs/claude-inline-box.gif" alt="Claude inline box with Keep and Undo per change"> | |
+| **One-step setup (copilot-claude skill)** | **Claude inline box (no Copilot)** |
+| <img src="docs/claude-inline/gifs/setup.gif" alt="Setup script installs the extension and sets the model"> | <img src="docs/claude-inline/gifs/claude-inline-box.gif" alt="Claude inline box with Keep and Undo per change"> |
 
 ## Install the skills
 
