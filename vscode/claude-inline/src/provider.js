@@ -11,7 +11,15 @@ const MODELS = [
 ];
 
 /** Makes Claude, via the Claude Code CLI login, a model in VS Code's own chat and inline chat (Ctrl+I). */
+function describePart(p) {
+  const kind = p?.constructor?.name || typeof p;
+  const keys = p && typeof p === 'object' ? Object.keys(p).join(',') : '';
+  return `${kind}{${keys}}`;
+}
+
 function registerProvider(context) {
+  const log = vscode.window.createOutputChannel('Claude Code', { log: true });
+  context.subscriptions.push(log);
   const provider = {
     provideLanguageModelChatInformation() {
       return MODELS.map((m) => ({
@@ -30,17 +38,29 @@ function registerProvider(context) {
       const abort = new AbortController();
       token.onCancellationRequested(() => abort.abort());
       const tools = options.tools || [];
+      log.info(`request model=${model.id} messages=${messages.length} toolMode=${options.toolMode} tools=[${tools.map((t) => t.name).join(', ')}]`);
+      messages.forEach((m, i) => log.info(`  msg ${i} role=${m.role} parts=${(m.content || []).map(describePart).join(' ')}`));
       const folder = vscode.workspace.workspaceFolders?.[0];
+      const prompt = pc.messagesToPrompt(messages);
+      const system = pc.systemPrompt(tools, options.toolMode);
+      if (process.env.CLAUDE_INLINE_DUMP) {
+        // Diagnostics only: the exact text sent to the CLI for each request.
+        const stamp = Date.now();
+        require('fs').writeFileSync(require('path').join(process.env.CLAUDE_INLINE_DUMP, `${stamp}-system.txt`), system);
+        require('fs').writeFileSync(require('path').join(process.env.CLAUDE_INLINE_DUMP, `${stamp}-prompt.txt`), prompt);
+      }
       const out = await runClaudeStructured({
         claudePath: cfg.get('claudePath', 'claude'),
         model: model.id,
         cwd: folder ? folder.uri.fsPath : undefined,
-        prompt: pc.messagesToPrompt(messages),
-        system: pc.systemPrompt(tools, options.toolMode),
+        prompt,
+        system,
         schema: pc.SCHEMA,
         signal: abort.signal,
       });
-      for (const part of pc.toParts(out, tools)) {
+      const parts = pc.toParts(out, tools);
+      log.info(`reply ${parts.map((p) => (p.kind === 'tool' ? `tool:${p.name}` : `text(${p.value.length})`)).join(' ')}`);
+      for (const part of parts) {
         progress.report(part.kind === 'text'
           ? new vscode.LanguageModelTextPart(part.value)
           : new vscode.LanguageModelToolCallPart(part.callId, part.name, part.input));

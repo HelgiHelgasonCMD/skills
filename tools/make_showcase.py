@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Render docs/<skill>/design/*.dc.html to PNG with headless Chromium and stitch them into a GIF.
+"""Showcase GIFs for the README.
 
-Needs Pillow (`pip install pillow` in a venv) and a Chromium: $CHROME, or Playwright's
-headless shell from ~/.cache/ms-playwright.
-Usage: make_showcase.py docs/inline-comments Main Review Summary
+  make_showcase.py docs/inline-comments Main Review Summary
+      render docs/<x>/design/*.dc.html with headless Chromium and stitch them into walkthrough.gif
+  make_showcase.py --recording FRAMES_DIR OUT.gif [--crop x,y,w,h] [--width 900]
+      turn a screen recording (PNG frames named by millisecond timestamp) into a GIF
+
+Needs Pillow (`pip install pillow` in a venv); the design mode also needs a Chromium: $CHROME,
+or Playwright's headless shell from ~/.cache/ms-playwright.
 """
 import glob
 import os
@@ -63,7 +67,44 @@ def gif(png_dir, names, out):
     q[0].save(out, save_all=True, append_images=q[1:], duration=durations, loop=0, optimize=True, disposal=1)
 
 
+def recording(frame_dir, out, crop=None, width=900, hold_last_ms=2500):
+    """Frames named <ms>.png → GIF whose frame durations follow the real timestamps."""
+    paths = sorted(Path(frame_dir).glob("*.png"))
+    if not paths:
+        raise SystemExit(f"no frames in {frame_dir}")
+    stamps = [int(p.stem) for p in paths]
+    frames = []
+    for p in paths:
+        im = Image.open(p).convert("RGB")
+        if crop:
+            x, y, w, h = crop
+            im = im.crop((x, y, x + w, y + h))
+        if width and im.width != width:
+            im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
+        frames.append(im)
+    # GIF delays are 10 ms units; round each frame's on-screen time to that.
+    durations = [max(20, round((b - a) / 10) * 10) for a, b in zip(stamps, stamps[1:])] + [hold_last_ms]
+    w, h = frames[0].size
+    step = max(1, len(frames) // 12)
+    sheet = Image.new("RGB", (w, h * len(frames[::step])))
+    for i, f in enumerate(frames[::step]):
+        sheet.paste(f, (0, i * h))
+    palette = sheet.quantize(colors=255, method=Image.Quantize.MEDIANCUT)
+    q = [f.quantize(palette=palette, dither=Image.Dither.NONE) for f in frames]
+    q[0].save(out, save_all=True, append_images=q[1:], duration=durations, loop=0, optimize=True, disposal=1)
+    return out
+
+
 def main(argv):
+    if argv[1] == "--recording":
+        args = argv[2:]
+        frame_dir, out = args[0], args[1]
+        crop = width = None
+        if "--crop" in args:
+            crop = tuple(int(v) for v in args[args.index("--crop") + 1].split(","))
+        width = int(args[args.index("--width") + 1]) if "--width" in args else 900
+        print(recording(frame_dir, out, crop, width))
+        return
     docs, names = Path(argv[1]), argv[2:]
     with tempfile.TemporaryDirectory() as tmp:
         render(docs / "design", names, tmp)

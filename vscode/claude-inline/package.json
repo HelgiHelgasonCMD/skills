@@ -2,7 +2,7 @@
   "name": "claude-inline",
   "displayName": "Claude for Copilot Inline Chat",
   "description": "Use Claude, through your Claude Code login (Pro/Team/Enterprise plan, no API key), as the model in VS Code's Copilot inline chat (Ctrl+I) and chat.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "helgihelgason",
   "license": "MIT",
   "repository": {

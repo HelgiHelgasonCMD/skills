@@ -26,6 +26,8 @@ test('systemPrompt lists tools and enforces required mode', () => {
   assert.doesNotMatch(pc.systemPrompt([], 1), /tool_calls/);
   assert.match(pc.systemPrompt(tools, 1), /- edit: Edit a file/);
   assert.match(pc.systemPrompt(tools, 2), /MUST call at least one tool/);
+  // Claude otherwise tries native tool calls, which the CLI (run with --tools "") rejects.
+  assert.match(pc.systemPrompt(tools, 1), /NOT native tools/);
 });
 
 test('toParts keeps text and only known tools', () => {

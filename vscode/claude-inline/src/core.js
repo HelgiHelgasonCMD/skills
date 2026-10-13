@@ -106,4 +106,13 @@ function fitReplacement(regionText, replacement) {
   return replacement.replace(/\r?\n*$/, '') + trailing;
 }
 
-module.exports = { fitReplacement, diffHunks, keepHunk, undoHunk, pickRegion, buildPrompt, parseResult, SYSTEM_PROMPT, RESULT_SCHEMA };
+/**
+ * Whether a document change may close a session. VS Code also fires change events with no
+ * content changes (dirty-state flips); one landing between "baseline set" and "edit applied"
+ * looked like "nothing pending" and ended the session before the edit arrived.
+ */
+function shouldSettle(contentChangeCount, applying) {
+  return contentChangeCount > 0 && !applying;
+}
+
+module.exports = { shouldSettle, fitReplacement, diffHunks, keepHunk, undoHunk, pickRegion, buildPrompt, parseResult, SYSTEM_PROMPT, RESULT_SCHEMA };

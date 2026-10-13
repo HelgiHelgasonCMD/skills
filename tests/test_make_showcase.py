@@ -42,5 +42,21 @@ class GifTest(unittest.TestCase):
                 self.assertGreater(colour_at(i * cycle + make_showcase.HOLD_MS // 2)[channel], 150)
             self.assertLess(max(colour_at(make_showcase.HOLD_MS + fade // 2)), 60)  # mid-fade is near background
 
+    def test_recording_uses_real_timestamps_crop_and_width(self):
+        with tempfile.TemporaryDirectory() as d:
+            for ms, colour in [(0, (200, 0, 0)), (400, (0, 200, 0)), (1000, (0, 0, 200))]:
+                Image.new("RGB", (1400, 900), colour).save(f"{d}/{ms:08d}.png")
+            out = Path(d, "rec.gif")
+            make_showcase.recording(d, out, crop=(100, 100, 800, 400), width=400, hold_last_ms=2000)
+            g = Image.open(out)
+            self.assertEqual(g.size, (400, 200))
+            timeline = []
+            for i in range(g.n_frames):
+                g.seek(i)
+                timeline.append((g.info["duration"], g.convert("RGB").getpixel((5, 5))))
+            self.assertEqual([t for t, _ in timeline], [400, 600, 2000])
+            self.assertGreater(timeline[1][1][1], 150)
+
+
 if __name__ == "__main__":
     unittest.main()

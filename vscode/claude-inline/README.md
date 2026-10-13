@@ -4,9 +4,14 @@ Keep **GitHub Copilot's inline chat exactly as it is** (Ctrl+I, the inline diff,
 and have **Claude** answer, through your Claude Code login. A Claude Pro, Team or Enterprise plan
 works; no API key.
 
-<p>
-  <img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/0-copilot-ctrl-i.png" width="640" alt="Copilot Ctrl+I inline chat answered by Claude Sonnet through Claude Code: inline diff with Keep and Undo">
-</p>
+**Ctrl+I in Copilot, answered by Claude:**
+
+<img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/gifs/copilot-ctrl-i.gif" width="720" alt="Copilot inline chat: Ctrl+I, type a request, Claude Sonnet edits the function inline, Keep">
+
+**Copilot Chat agent mode on Claude:** pick Claude Sonnet under *Claude Code* in the model picker. The agent reads
+the file, edits it, runs a check, and you Keep the result.
+
+<img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/gifs/copilot-chat-agent.gif" width="720" alt="Copilot Chat agent: choose Claude Sonnet, ask for docstrings, the agent edits and verifies">
 
 The extension registers Claude Code as a VS Code language-model provider, so **Claude Sonnet**, **Opus**
 and **Haiku** appear in Copilot's model pickers. Setting `inlineChat.defaultModel` makes Ctrl+I open on Claude.
@@ -54,9 +59,7 @@ The command **Claude: Inline Chat** opens a Claude prompt box at the cursor usin
 widget. Bind it to a key yourself. The edit applies inline with Keep/Undo above each change;
 Ctrl+Enter keeps everything, Ctrl+Backspace undoes everything.
 
-<p>
-  <img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/2-review.png" width="49%" alt="Fallback box with Keep and Undo">
-</p>
+<img src="https://raw.githubusercontent.com/HelgiHelgasonCMD/skills/main/docs/claude-inline/gifs/claude-inline-box.gif" width="720" alt="Claude: Inline Chat box: request, two changes, Keep one, Undo the other">
 
 ## Settings
 
