@@ -1,4 +1,7 @@
-.PHONY: check install
+.PHONY: check install showcase
+
+# Needs Pillow: point PYTHON_PIL at a venv python that has it.
+PYTHON_PIL ?= python3
 
 check:
 	python3 tools/validate.py
@@ -10,3 +13,6 @@ check:
 
 install:
 	tools/install.sh
+
+showcase:
+	$(PYTHON_PIL) tools/make_showcase.py docs/inline-comments Main Review Summary

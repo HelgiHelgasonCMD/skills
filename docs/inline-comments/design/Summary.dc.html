@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Get a summary</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&amp;family=IBM+Plex+Sans:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#101216}
+a{color:#8AB4FF}a:hover{color:#B8D0FF}
+</style>
+</helmet>
+<div style="width: 880px; height: 640px; box-sizing: border-box; padding: 40px 48px; display: flex; flex-direction: column; gap: 24px; background: #101216; color: #E6E8EB; font-family: 'IBM Plex Sans', sans-serif">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #F5B454">Step 3</div>
+<h1 style="margin: 0; font-size: 32px; font-weight: 600">See what was done, answered or skipped</h1>
+<p style="margin: 0; font-size: 16px; color: #A7AFBB">Questions get answered in chat, and the file is left alone. Unclear comments are never guessed.</p>
+</div>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 18px; padding: 24px; background: #181B21; border: 1px solid #2A2F38; border-radius: 10px">
+<div style="display: flex; flex-direction: column; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 22px">
+<div style="display: flex; gap: 16px"><span style="width: 96px; color: #A7AFBB">demo.py:8</span><span style="width: 88px; font-weight: 600; color: #7EE2A0">done</span><span style="flex: 1">5s timeout; HTTP errors re-raised with the user id</span></div>
+<div style="display: flex; gap: 16px"><span style="width: 96px; color: #A7AFBB">demo.py:13</span><span style="width: 88px; font-weight: 600; color: #7EE2A0">done</span><span style="flex: 1">missing "last" now gives just the first name</span></div>
+<div style="display: flex; gap: 16px"><span style="width: 96px; color: #A7AFBB">demo.py:16</span><span style="width: 88px; font-weight: 600; color: #8AB4FF">answered</span><span style="flex: 1">see below; the comment stays in place</span></div>
+<div style="display: flex; gap: 16px"><span style="width: 96px; color: #A7AFBB">demo.py:20</span><span style="width: 88px; font-weight: 600; color: #F5B454">skipped</span><span style="flex: 1">the comment is empty; what should total() do?</span></div>
+</div>
+<div style="border-top: 1px solid #2A2F38"></div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 15px; font-weight: 600">Why would greeting() break for users with no name?</div>
+<p style="margin: 0; font-size: 15px; line-height: 24px; color: #C9CED6">full_name() still reads <span style="font-family: 'IBM Plex Mono', monospace; color: #E6E8EB">user["first"]</span> directly. If a user has no "first" key, that raises a KeyError before greeting() ever builds the string. Using .get() for both parts with a fallback would fix it.</p>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":880,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
