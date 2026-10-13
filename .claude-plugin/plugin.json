@@ -1,8 +1,10 @@
 {
   "name": "helgi-skills",
-  "description": "Claude Code skills by Helgi Helgason, including inline-comments: Copilot-style @claude comments that turn into reviewable edits.",
+  "description": "Skills: copilot-claude sets up Copilot's inline chat and agent mode to run on Claude via your Claude Code login; inline-comments turns @claude code comments into reviewable edits.",
   "version": "0.1.0",
-  "author": { "name": "Helgi Helgason" },
+  "author": {
+    "name": "Helgi Helgason"
+  },
   "repository": "https://github.com/HelgiHelgasonCMD/skills",
   "license": "MIT"
 }
