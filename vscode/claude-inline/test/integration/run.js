@@ -9,12 +9,14 @@ async function main() {
   const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'claude-inline-ws-'));
   fs.writeFileSync(path.join(workspace, 'sample.txt'), 'a\nb\nc\nd\ne\n');
   fs.writeFileSync(path.join(workspace, 'greet.py'), 'def greet(name):\n    return "Hello, " + name\n');
+  const logs = path.join(root, '.vscode-test', 'user-data', 'logs');
+  fs.rmSync(logs, { recursive: true, force: true });
   try {
     await runTests({
       extensionDevelopmentPath: root,
-      extensionTestsPath: path.join(__dirname, 'suite.js'),
+      extensionTestsPath: path.join(__dirname, process.env.CLAUDE_INLINE_SUITE || 'suite.js'),
       launchArgs: [workspace, '--disable-extensions', '--disable-workspace-trust'],
-      extensionTestsEnv: { ...process.env, CLAUDE_INLINE_FAKE: path.join(root, 'test/fixtures/fake-claude.js') },
+      extensionTestsEnv: { ...process.env, CLAUDE_INLINE_LOGS: logs, CLAUDE_INLINE_FAKE: path.join(root, 'test/fixtures/fake-claude.js') },
     });
   } finally {
     fs.rmSync(workspace, { recursive: true, force: true });
